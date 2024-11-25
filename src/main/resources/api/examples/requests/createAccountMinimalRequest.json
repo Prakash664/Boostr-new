@@ -1,0 +1,61 @@
+{
+  "requestId": "RQST00001",
+  "requestedBy": "Bianca White",
+  "requestI18NInfo": {
+    "localeName": "United States",
+    "localeCode": "en-us",
+    "timezone": "Apia Standard Time (Pacific/Apia)",
+    "currencyName": "United States Dollar",
+    "currencyCode": "USD"
+  },
+  "requestMode": "Minimal",
+  "adServerInstanceId": "INS0491032",
+  "adServerCode": "Wide-Orbit",
+  "adServerApplicationName": "Wide-Orbit",
+  "accounts":
+  [
+    {
+      "id": "",
+      "tentativeMappingId": "8f651263-0478-49ea-8811-153xxxxxx784",
+      "accountType": "advertiser",
+      "accountName": "Acme Global Test2",
+      "description": "This is Acme Global Account based in US",
+      "adServerUserId": "c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf",
+      "accountNumber": "AC00xxx13",
+      "numberOfEmployees": 25000,
+      "industry": "Consumption-Beverage",
+      "parentId": "c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf",
+      "rating": "hot",
+      "website": "http://www.acmeexample.com",
+      "phone": "0000000000",
+      "billingAddress": {
+        "line1": "312 Line 1",
+        "line2": "Address Line 2",
+        "line3": "Line 3",
+        "city": "Austin",
+        "state": "TX",
+        "zipCode": "78767",
+        "country": "USA"
+      },
+      "shippingAddress": {
+        "line1": "312 Line1",
+        "line2": "Constitution Place",
+        "line3": "Line 3",
+        "city": "Austin",
+        "state": "TX",
+        "zipCode": "78767",
+        "country": "USA"
+      },
+      "accountCode": "00xxx000xxxxk30YAD",
+      "status": "InActive",
+      "relatedAccounts": [],
+      "additionalFields": {},
+      "attributes": {
+        "careOf": "careOfExample",
+        "externalId": "",
+        "statementEmailAddress": "xyz@example.com",
+        "isPending": false
+      }
+    }
+  ]
+}

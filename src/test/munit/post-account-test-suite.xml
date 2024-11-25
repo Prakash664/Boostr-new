@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+	xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<munit:config name="post-account-test-suite.xml" />
+	<munit:test name="post-account-test-suite-post:\account:application\json:syncnewaccounttoexternalsystem-configTest" doc:id="82cdab24-028e-4bc9-94c9-bba69e380a50" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when(RetriveOS)" doc:id="dc70fb8b-f69d-4321-b502-5e64d4ec1d82" processor="os:retrieve">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="Retrieve Token From OS" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="88a8d6ae-d2b0-4c1b-a298-ee2d200adaaa" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="clientCredentialToken" attributeName="key" />
+					<munit-tools:with-attribute whereValue="Object_store" attributeName="objectStore" />
+					<munit-tools:with-attribute whereValue="Token" attributeName="target" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when(TokenFlow)" doc:id="77840309-1b33-4d40-ac06-5841a980e99b" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="POST" attributeName="method" />
+					<munit-tools:with-attribute whereValue="Request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="7e7eb100-1782-4ca3-bcd6-bbaaae9cc86f" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="${http.JWTtoken.tokenurl}" attributeName="url" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="8434ffa7-ee74-47a5-bbbc-380389bb30b0" processor="os:store">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Store Token in OS" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="43ee992b-f24f-4b2f-b397-4ef8d022aeb5" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when(Boostr_request)" doc:id="5f17d946-f0d8-4433-b0ab-6e1df2035148" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="POST" attributeName="method" />
+					<munit-tools:with-attribute whereValue="Boostr_Request_Connection" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9566e311-3372-4e35-9f44-2dddea708468" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('sampledata/post-res-accountDetails.json')]" mediaType="application/json" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="786cd59a-d574-40a1-8879-6ec84983e83d" >
+				<munit:payload value='{&#10;  "requestId": "c9636ffa-bd35-f3ef-38f8-4c649a6fa33f",&#10;  "requestedBy": "Bianca White",&#10;  "requestI18NInfo": {&#10;    "localeName": "United States",&#10;    "localeCode": "en-us",&#10;    "timezone": "Apia Standard Time (Pacific/Apia)",&#10;    "currencyName": "United States Dollar",&#10;    "currencyCode": "USD"&#10;  },&#10;  "requestMode": "Minimal",&#10;  "adServerInstanceId": "INS0491032",&#10;  "adServerCode": "Boostr",&#10;  "adServerApplicationName": "Boostr",&#10;  "accounts": [&#10;    {&#10;      "id": "ACC1001",&#10;      "accountType": "Advertiser",&#10;      "accountName": "Coca-DemoTest42",&#10;      "description": "Global beverage company",&#10;      "adServerUserId": "ADUSER003",&#10;      "accountNumber": "COCA-12345",&#10;      "numberOfEmployees": 100000,&#10;      "industry": "Beverage",&#10;      "parentId": "PARENTACC003",&#10;      "rating": "A+",&#10;      "website": "https://cocacola.com",&#10;      "phone": "+1-800-123-4567",&#10;      "billingAddress": {&#10;        "addressLine1": "123 Beverage Way",&#10;        "addressLine2": "Suite 500",&#10;        "addressLine3": "Corporate Office",&#10;        "city": "Atlanta",&#10;        "state": "GA",&#10;        "zipcode": "30301",&#10;        "country": "USA",&#10;        "email": "billing@cocacola.com",&#10;        "phone": "+1-800-555-1212",&#10;        "alternatePhone": "+1-800-555-1313"&#10;      },&#10;      "shippingAddress": {&#10;        "addressLine1": "456 Distribution Ln",&#10;        "addressLine2": "Warehouse 2",&#10;        "addressLine3": "",&#10;        "city": "Atlanta",&#10;        "state": "GA",&#10;        "zipcode": "30302",&#10;        "country": "USA",&#10;        "email": "shipping@cocacola.com",&#10;        "phone": "+1-800-555-1414",&#10;        "alternatePhone": "+1-800-555-1515"&#10;      }&#10;    }&#10;  ]&#10;}' encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[%dw 2.0&#10;import testdata&#10;output application/json&#10;---&#10;testdata::testreqdata]" />
+			</munit:set-event>
+			<set-variable value='#[{&#10;    "requestId": "RQST00002",&#10;    "requestedBy": "Bianca White",&#10;    "requestI18NInfo": {&#10;        "locale": "en-US",&#10;        "timeZone": "PST",&#10;        "currency": "USD"&#10;    },&#10;    "requestMode": "Detail",&#10;    "adServerInstanceId": "INS0491001",&#10;    "adServerCode": "WO",&#10;    "adServerApplicationName": "Wide-Orbit",&#10;    "accounts": [&#10;        {&#10;            "id": "c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf",&#10;            "accountType": "Advertiser",&#10;            "accountName": "Acme Global248",&#10;            "description": "This is Acme Global Account based in US",&#10;            "adServerUserId": "c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf",&#10;            "accountNumber": "AC0012313",&#10;            "numberOfEmployees": 25000,&#10;            "industry": "Consumption-Beverage",&#10;            //   "parentId": "c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf",&#10;            "rating": "hot",&#10;            "website": "http://www.acmeexample.com",&#10;            "phone": "000000000",&#10;            "address": {&#10;                "addressLine1": "address line 1",&#10;                "addressLine2": "address line 2",&#10;                "addressLine3": "address line 3",&#10;                "city": "Houston",&#10;                "state": "Texas",&#10;                "zipcode": "77001",&#10;                "country": "United States",&#10;                "email": "example@email.com",&#10;                "phone": "9876543210",&#10;                "alternatePhone": "9876543210"&#10;            },&#10;            "billingAddress": {&#10;                "addressLine1": "address line 1",&#10;                "addressLine2": "address line 2",&#10;                "addressLine3": "address line 3",&#10;                "city": "Houston",&#10;                "state": "Texas",&#10;                "zipcode": "77001",&#10;                "country": "United States",&#10;                "email": "example@email.com",&#10;                "phone": "9876543210",&#10;                "alternatePhone": "9876543210"&#10;            },&#10;            "shippingAddress": {&#10;                "addressLine1": "address line 1",&#10;                "addressLine2": "address line 2",&#10;                "addressLine3": "address line 3",&#10;                "city": "Houston",&#10;                "state": "Texas",&#10;                "zipcode": "77001",&#10;                "country": "United States",&#10;                "email": "example@email.com",&#10;                "phone": "9876543210",&#10;                "alternatePhone": "9876543210"&#10;            },&#10;            "accountCode": "00xxx000xxxxk30YAD",&#10;            "status": "Active",&#10;            "RelatedAccounts": {&#10;                "id": "c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf",&#10;                "accountType": "Agency",&#10;                "accountName": "Acme Global",&#10;                "description": "This is Acme Global Account based in US",&#10;                "address": {&#10;                    "addressLine1": "address line 1",&#10;                    "addressLine2": "address line 2",&#10;                    "addressLine3": "address line 3",&#10;                    "city": "Houston",&#10;                    "state": "Texas",&#10;                    "zipcode": "77001",&#10;                    "country": "United States",&#10;                    "email": "example@email.com",&#10;                    "phone": "9876543210",&#10;                    "alternatePhone": "9876543210"&#10;                },&#10;                "billingAddress": {&#10;                    "addressLine1": "address line 1",&#10;                    "addressLine2": "address line 2",&#10;                    "addressLine3": "address line 3",&#10;                    "city": "Houston",&#10;                    "state": "Texas",&#10;                    "zipcode": "77001",&#10;                    "country": "United States",&#10;                    "email": "example@email.com",&#10;                    "phone": "9876543210",&#10;                    "alternatePhone": "9876543210"&#10;                },&#10;                "shippingAddress": {&#10;                    "addressLine1": "address line 1",&#10;                    "addressLine2": "address line 2",&#10;                    "addressLine3": "address line 3",&#10;                    "city": "Houston",&#10;                    "state": "Texas",&#10;                    "zipcode": "77001",&#10;                    "country": "United States",&#10;                    "email": "example@email.com",&#10;                    "phone": "9876543210",&#10;                    "alternatePhone": "9876543210"&#10;                },&#10;                "accountCode": "00xxx000xxxxk30YAD",&#10;                "status": "Active",&#10;                "tentativeMappingId": "c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf",&#10;                "additionalFields": {&#10;                    "key1": "value1",&#10;                    "key2": "value2"&#10;                },&#10;                "attributes": {&#10;                    "attribute1": "value1",&#10;                    "attribute2": "value2"&#10;                }&#10;            },&#10;            "relatedContacts": [&#10;                {&#10;                    "id": "c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf",&#10;                    "contactType": "AdBuyer",&#10;                    "title": "Media Buyer",&#10;                    "saluation": "Mr.",&#10;                    "firstName": "Sean",&#10;                    "lastName": "Sean",&#10;                    "description": "Mr. Sean in Media Buyer",&#10;                    "email": "sean@example.com",&#10;                    "department": "Advertising",&#10;                    "phone": "000000000",&#10;                    "address": {&#10;                        "addressLine1": "address line 1",&#10;                        "addressLine2": "address line 2",&#10;                        "addressLine3": "address line 3",&#10;                        "city": "Houston",&#10;                        "state": "Texas",&#10;                        "zipcode": "77001",&#10;                        "country": "United States",&#10;                        "email": "example@email.com",&#10;                        "phone": "9876543210",&#10;                        "alternatePhone": "9876543210"&#10;                    },&#10;                    "mailingAddress": {&#10;                        "addressLine1": "address line 1",&#10;                        "addressLine2": "address line 2",&#10;                        "addressLine3": "address line 3",&#10;                        "city": "Houston",&#10;                        "state": "Texas",&#10;                        "zipcode": "77001",&#10;                        "country": "United States",&#10;                        "email": "example@email.com",&#10;                        "phone": "9876543210",&#10;                        "alternatePhone": "9876543210"&#10;                    },&#10;                    "contactCode": "00xxx000xxxxk30YAD",&#10;                    "tentativeMappingId": "c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf",&#10;                    "additionalFields": {&#10;                        "key1": "value1",&#10;                        "key2": "value2"&#10;                    },&#10;                    "attributes": {&#10;                        "attribute1": "value1",&#10;                        "attribute2": "value2"&#10;                    }&#10;                }&#10;            ],&#10;            "tentativeMappingId": "c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf",&#10;            "additionalFields": {&#10;                "additionField1": ""&#10;            },&#10;            "attributes": {&#10;                "additionField1": ""&#10;            }&#10;        }&#10;    ]&#10;}]' doc:name="Set Variable" doc:id="21ffd8d7-d864-46d2-b54a-5cde45c9b40d" variableName="originalPayload"/>
+			<flow-ref doc:name="Flow-ref to post:\account:application\json:media-external-accounts-integrations-api-config" doc:id="1052565c-73c8-4990-a304-f7dff47c46b0" name="post:\account:application\json:media-external-accounts-integrations-api-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="c5a1757b-b408-413f-9683-f97be6ae27e2" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+	
+	<munit:test name="RetriveToken_Flow" doc:id="e497c302-b5bb-4344-a808-e67e3ca4c3b6" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="57d9b92d-9141-420b-b8dc-ef2d4f017bb3" processor="os:retrieve">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Retrieve Token From OS" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="88a8d6ae-d2b0-4c1b-a298-ee2d200adaaa" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="clientCredentialToken" attributeName="key" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when(Boostr_request)" doc:id="7cb0bf5c-3d51-4c53-b1a7-278164e61d2e" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="POST" attributeName="method" />
+					<munit-tools:with-attribute whereValue="Boostr_Request_Connection" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9566e311-3372-4e35-9f44-2dddea708468" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('sampledata/post-res-accountDetails.json')]" mediaType="application/json" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="612914e8-0760-449d-87dc-5a25f33fb063" >
+				<munit:payload value='{&#10;  "requestId": "c9636ffa-bd35-f3ef-38f8-4c649a6fa33f",&#10;  "requestedBy": "Bianca White",&#10;  "requestI18NInfo": {&#10;    "localeName": "United States",&#10;    "localeCode": "en-us",&#10;    "timezone": "Apia Standard Time (Pacific/Apia)",&#10;    "currencyName": "United States Dollar",&#10;    "currencyCode": "USD"&#10;  },&#10;  "requestMode": "Minimal",&#10;  "adServerInstanceId": "INS0491032",&#10;  "adServerCode": "Boostr",&#10;  "adServerApplicationName": "Boostr",&#10;  "accounts": [&#10;    {&#10;      "id": "ACC1001",&#10;      "accountType": "Advertiser",&#10;      "accountName": "Coca-DemoTest42",&#10;      "description": "Global beverage company",&#10;      "adServerUserId": "ADUSER003",&#10;      "accountNumber": "COCA-12345",&#10;      "numberOfEmployees": 100000,&#10;      "industry": "Beverage",&#10;      "parentId": "PARENTACC003",&#10;      "rating": "A+",&#10;      "website": "https://cocacola.com",&#10;      "phone": "+1-800-123-4567",&#10;      "billingAddress": {&#10;        "addressLine1": "123 Beverage Way",&#10;        "addressLine2": "Suite 500",&#10;        "addressLine3": "Corporate Office",&#10;        "city": "Atlanta",&#10;        "state": "GA",&#10;        "zipcode": "30301",&#10;        "country": "USA",&#10;        "email": "billing@cocacola.com",&#10;        "phone": "+1-800-555-1212",&#10;        "alternatePhone": "+1-800-555-1313"&#10;      },&#10;      "shippingAddress": {&#10;        "addressLine1": "456 Distribution Ln",&#10;        "addressLine2": "Warehouse 2",&#10;        "addressLine3": "",&#10;        "city": "Atlanta",&#10;        "state": "GA",&#10;        "zipcode": "30302",&#10;        "country": "USA",&#10;        "email": "shipping@cocacola.com",&#10;        "phone": "+1-800-555-1414",&#10;        "alternatePhone": "+1-800-555-1515"&#10;      }&#10;    }&#10;  ]&#10;}' encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[%dw 2.0&#10;import testdata&#10;output application/json&#10;---&#10;testdata::testreqdata]" />
+			</munit:set-event>
+			<ee:transform doc:name="Transform Message" doc:id="4a7cfff0-91ce-43e9-8a16-5fb1e1f212a4">
+				<ee:message>
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="Token" ><![CDATA[%dw 2.0
+output application/json
+---
+"fasgas"]]></ee:set-variable>
+					<ee:set-variable variableName="originalPayload" ><![CDATA[%dw 2.0
+output application/json
+---
+{
+    "requestId": "RQST00002",
+    "requestedBy": "Bianca White",
+    "requestI18NInfo": {
+        "locale": "en-US",
+        "timeZone": "PST",
+        "currency": "USD"
+    },
+    "requestMode": "Detail",
+    "adServerInstanceId": "INS0491001",
+    "adServerCode": "WO",
+    "adServerApplicationName": "Wide-Orbit",
+    "accounts": [
+        {
+            "id": "c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf",
+            "accountType": "Advertiser",
+            "accountName": "Acme Global248",
+            "description": "This is Acme Global Account based in US",
+            "adServerUserId": "c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf",
+            "accountNumber": "AC0012313",
+            "numberOfEmployees": 25000,
+            "industry": "Consumption-Beverage",
+            //   "parentId": "c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf",
+            "rating": "hot",
+            "website": "http://www.acmeexample.com",
+            "phone": "000000000",
+            "address": {
+                "addressLine1": "address line 1",
+                "addressLine2": "address line 2",
+                "addressLine3": "address line 3",
+                "city": "Houston",
+                "state": "Texas",
+                "zipcode": "77001",
+                "country": "United States",
+                "email": "example@email.com",
+                "phone": "9876543210",
+                "alternatePhone": "9876543210"
+            },
+            "billingAddress": {
+                "addressLine1": "address line 1",
+                "addressLine2": "address line 2",
+                "addressLine3": "address line 3",
+                "city": "Houston",
+                "state": "Texas",
+                "zipcode": "77001",
+                "country": "United States",
+                "email": "example@email.com",
+                "phone": "9876543210",
+                "alternatePhone": "9876543210"
+            },
+            "shippingAddress": {
+                "addressLine1": "address line 1",
+                "addressLine2": "address line 2",
+                "addressLine3": "address line 3",
+                "city": "Houston",
+                "state": "Texas",
+                "zipcode": "77001",
+                "country": "United States",
+                "email": "example@email.com",
+                "phone": "9876543210",
+                "alternatePhone": "9876543210"
+            },
+            "accountCode": "00xxx000xxxxk30YAD",
+            "status": "Active",
+            "RelatedAccounts": {
+                "id": "c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf",
+                "accountType": "Agency",
+                "accountName": "Acme Global",
+                "description": "This is Acme Global Account based in US",
+                "address": {
+                    "addressLine1": "address line 1",
+                    "addressLine2": "address line 2",
+                    "addressLine3": "address line 3",
+                    "city": "Houston",
+                    "state": "Texas",
+                    "zipcode": "77001",
+                    "country": "United States",
+                    "email": "example@email.com",
+                    "phone": "9876543210",
+                    "alternatePhone": "9876543210"
+                },
+                "billingAddress": {
+                    "addressLine1": "address line 1",
+                    "addressLine2": "address line 2",
+                    "addressLine3": "address line 3",
+                    "city": "Houston",
+                    "state": "Texas",
+                    "zipcode": "77001",
+                    "country": "United States",
+                    "email": "example@email.com",
+                    "phone": "9876543210",
+                    "alternatePhone": "9876543210"
+                },
+                "shippingAddress": {
+                    "addressLine1": "address line 1",
+                    "addressLine2": "address line 2",
+                    "addressLine3": "address line 3",
+                    "city": "Houston",
+                    "state": "Texas",
+                    "zipcode": "77001",
+                    "country": "United States",
+                    "email": "example@email.com",
+                    "phone": "9876543210",
+                    "alternatePhone": "9876543210"
+                },
+                "accountCode": "00xxx000xxxxk30YAD",
+                "status": "Active",
+                "tentativeMappingId": "c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf",
+                "additionalFields": {
+                    "key1": "value1",
+                    "key2": "value2"
+                },
+                "attributes": {
+                    "attribute1": "value1",
+                    "attribute2": "value2"
+                }
+            },
+            "relatedContacts": [
+                {
+                    "id": "c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf",
+                    "contactType": "AdBuyer",
+                    "title": "Media Buyer",
+                    "saluation": "Mr.",
+                    "firstName": "Sean",
+                    "lastName": "Sean",
+                    "description": "Mr. Sean in Media Buyer",
+                    "email": "sean@example.com",
+                    "department": "Advertising",
+                    "phone": "000000000",
+                    "address": {
+                        "addressLine1": "address line 1",
+                        "addressLine2": "address line 2",
+                        "addressLine3": "address line 3",
+                        "city": "Houston",
+                        "state": "Texas",
+                        "zipcode": "77001",
+                        "country": "United States",
+                        "email": "example@email.com",
+                        "phone": "9876543210",
+                        "alternatePhone": "9876543210"
+                    },
+                    "mailingAddress": {
+                        "addressLine1": "address line 1",
+                        "addressLine2": "address line 2",
+                        "addressLine3": "address line 3",
+                        "city": "Houston",
+                        "state": "Texas",
+                        "zipcode": "77001",
+                        "country": "United States",
+                        "email": "example@email.com",
+                        "phone": "9876543210",
+                        "alternatePhone": "9876543210"
+                    },
+                    "contactCode": "00xxx000xxxxk30YAD",
+                    "tentativeMappingId": "c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf",
+                    "additionalFields": {
+                        "key1": "value1",
+                        "key2": "value2"
+                    },
+                    "attributes": {
+                        "attribute1": "value1",
+                        "attribute2": "value2"
+                    }
+                }
+            ],
+            "tentativeMappingId": "c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf",
+            "additionalFields": {
+                "additionField1": ""
+            },
+            "attributes": {
+                "additionField1": ""
+            }
+        }
+    ]
+}]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<flow-ref doc:name="Flow-ref to post:\account:application\json:media-external-accounts-integrations-api-config" doc:id="7680dfda-54dc-4b61-b8a7-2dc250947c73" name="post:\account:application\json:media-external-accounts-integrations-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="3ddd39c8-5fb2-422b-a9db-703475237414" is="#[MunitTools::notNullValue()]" expression="#[payload]" />
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

@@ -1,0 +1,406 @@
+#%RAML 1.0 Library
+usage: This library contains common data types.
+
+traits:
+  errorTrait:
+    responses:
+      400:
+        description: There was an issue with your request.
+        body:
+          application/json:
+            type: ErrorMessage
+            example: !include ../examples/errors/bad-request-400.json
+
+      401:
+        description: Authorization failed.
+        body:
+          application/json:
+            type: ErrorMessage
+            example: !include ../examples/errors/unauthorise-401.json
+      403:
+        description: Request forbidden.
+        body:
+          application/json:
+            type: ErrorMessage
+            example: !include ../examples/errors/forbidden-403.json
+      404:
+        description: Resource not found.
+        body:
+          application/json:
+            type: ErrorMessage
+            example: !include ../examples/errors/resource-not-found-404.json
+      405:
+        description: Method not allowed.
+        body:
+          application/json:
+            type: ErrorMessage
+            example: !include ../examples/errors/method-not-allowed-405.json
+      422:
+        description: Unprocessable entity.
+        body:
+          application/json:
+            type: ErrorMessage
+            example: !include ../examples/errors/unprocessable-content-422.json
+      500:
+        description: Unable to complete the request as the server encountered an error.
+        body:
+          application/json:
+            type: ErrorMessage
+            example: !include ../examples/errors/internal-server-error-500.json
+
+types:
+  Account:
+    description: Details of an account.
+    properties:
+      id?:
+        description: The unique identifier for the account.
+        type: string
+        example: c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf
+      accountType?:
+        description: The type of the account, for example Advertiser, Agency, Brand, and so on.
+        type: string
+        example: Advertiser
+      accountName?:
+        description: Name of the account.
+        type: string
+        example: Acme Global
+      description?:
+        description: Description of the account.
+        type: string
+        example: This is Acme Global Account based in US
+      adServerUserId?:
+        description: The userId to map to this account.
+        type: string
+        example: c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf
+      accountNumber?:
+        description: The accountNumber associated with the account.
+        type: string
+        example: AC0012313
+      numberOfEmployees?:
+        description: The number of employees associated for this account.
+        type: number
+        example: 25000
+      industry?:
+        description: The industry this account is associated with.
+        type: string
+        example: Consumption-Beverage
+      parentId?:
+        description: The parent account ID.
+        type: string
+        example: c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf
+      rating?:
+        description: The rating for this account.
+        type: string
+        example: hot
+      website?:
+        description: The website for this account.
+        type: string
+        example: http://www.acmeexample.com
+      phone?:
+        description: The phone number associated with this account.
+        type: string
+        example: "000000000"
+      address?:
+        description: The address registered for this account with details such as street, city, state, and phone number.
+        type: Address
+      billingAddress?:
+        description: The billing address registered for this account with details such as street, city, state, and phone number.
+        type: Address
+      shippingAddress?:
+        description: The shipping address registered for this account with details such as street, city, state, and phone number.
+        type: Address
+      accountCode:
+        description: The account code to map with the external system ID.
+        type: string
+        example: 00xxx000xxxxk30YAD
+        required: true
+      status?:
+        description: The account status.
+        enum: [Active,InActive]
+      relatedAccounts?:
+        description: Accounts that are associated with this account, such as agencies, brands, or an advertiser.
+        type: RelatedAccount[]
+      relatedContacts?:
+        description: Contacts that are associated with this account.
+        type: RelatedContact[]
+      tentativeMappingId?:
+        description: Tentative mapping ID for external systems. Applicable only for POST requests.
+        type: string
+        example: c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf
+      additionalFields?:
+        description: Additional optional fields the client wants to include.
+        type: KeyValuePair
+      attributes?:
+        description: Additional request attributes used by wide-orbit, boostr, and flows. 
+        type: KeyValuePair
+  
+  RelatedContact:
+    description: Details of a Contact.
+    properties:
+      id: 
+        description: The unique identifier for the account-contact relation.
+        type: string
+        example: c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf
+        required: true
+      contactType?:
+        description: The type of contact, for example advertiser_contact, billing_contact, ad buyer and so on.
+        type: string
+        example: AdBuyer
+      title?:
+        description: The title for the contact.
+        type: string
+        example: Media Buyer
+      saluation?:
+        description: The salutation for the contact.
+        type: string
+        example: Mr.
+      firstName?: 
+        description: The first name of the contact.
+        type: string
+        example: Sean
+      lastName?:
+        description: The last name of the contact.
+        type: string
+        example: Sean
+      description?:
+        description: The description name of the contact.
+        type: string
+        example: Mr Sean in Media Buyer
+      email?:
+        description: The email associated with this contact.
+        type: string
+        example: sean@example.com
+      department?:
+        description: The department for this contact.
+        type: string
+        example: Advertising
+      phone?:
+        description: The phone number associated with this contact.
+        type: string
+        example: "000000000"
+      address?:
+        description: The address registered for this contact with details such as street, city, state, and phone number.
+        type: Address
+      mailingAddress?:
+        description: The mailing address registered for this contact with details such as street, city, state, and phone number.
+        type: Address
+      contactCode:
+        description: The contact code to map with the external system Id.
+        type: string
+        example: 00xxx000xxxxk30YAD
+        required: true
+      tentativeMappingId?:
+        description: Tentative mapping Id for external systems. Applicable only for POST requests.
+        type: string
+        example: c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf
+      additionalFields?:
+        description: Additional optional fields the client wants to include.
+        type: KeyValuePair
+      attributes?:
+        description: Additional request attributes used by wide-orbit, boostr, and flows. 
+        type: KeyValuePair
+  
+  RelatedAccount:
+    description: Related Account details.
+    properties:
+      id:
+        description: The unique identifier for the account-account relation.
+        type: string
+        example: c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf
+        required: true
+      accountType?:
+        description: The type of the account, for example Advertiser, Agency, Brand, and so on.
+        type: string
+        example: Agency
+      accountName?:
+        description: Name of the account.
+        type: string
+        example: Acme Global
+      description?:
+        description: Description of the account.
+        type: string
+        example: This is Acme Global Account based in US
+      address?:
+        description: The address registered for this account with details such as street, city, state, and phone number.
+        type: Address
+      billingAddress?:
+        description: The billing address registered for this account with details such as street, city, state, and phone number.
+        type: Address
+      shippingAddress?:
+        description: The shipping address registered for this account with details such as street, city, state, and phone number.
+        type: Address
+      accountCode:
+        description: The account code to map with the external system ID.
+        type: string
+        example: 00xxx000xxxxk30YAD
+        required: true
+      status?:
+        description: The account status.
+        enum: [Active,InActive]
+      tentativeMappingId?:
+        description: Tentative mapping ID for external systems. Applicable only for POST requests.
+        type: string
+        example: c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf
+      additionalFields?:
+        description: Additional optional fields the client wants to include.
+        type: KeyValuePair
+      attributes?:
+        description: Additional request attributes used by wide-orbit, boostr, and flows. 
+        type: KeyValuePair
+
+  AdditionalInfo:
+    description: The additional info in response payload.			
+    properties:
+      type:
+        description: The info type.
+        enum: ["info", "error"]
+        example: info
+        required: true
+      accountId:  
+        description: The unique identifier for the account.
+        type: string
+        required: true
+      relatedAccounts?:
+        description: The info for relatedAccounts.
+        type: KeyValuePair
+      relatedContacts?:
+        description: The info for relatedContacts.
+        type: KeyValuePair  
+  
+  Address:
+    description: Address details.
+    properties:
+      id?: 
+        description: The unique identifier for the address.
+        type: string
+        example: c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf
+      addressLine1?:
+        description: Line 1 of the address.
+        type: string
+        example: Address line 1
+      addressLine2?:
+        description: Line 2 of the address.
+        type: string
+        example: Address line 2
+      addressLine3?:
+        description: Line 3 of the address
+        type: string
+        example: Address line 3
+      city?:
+        description: The city in the address.
+        type: string
+        example: Austin
+      state?:
+        description: The state in the address.
+        type: string
+        example: Texas
+      zipcode?:
+        description: The zipcode for the address. 
+        type: string
+        example: "77001"
+      country?:
+        description: The country for the address.
+        type: string
+        example: United States
+      
+  ErrorMessage:
+    description: Shown when an API throws an error, typically with an HTTP error response code (3xx, 4xx, or 5xx).
+    properties:
+      requestId:
+        description: The unique identifier of the request.
+        example: RQST00001
+        type: string
+      requestedBy:
+        description: The account or user who initiated the request.
+        example: Bianca White
+        type: string
+      adServerInstanceId:
+        description: The identifier of the ad server instance.
+        example: INS0491001
+        type: string
+      result:
+        description: The metadata of the error payload.
+        type: Result
+      additionalInfo:
+        description: Additional Related Info.
+        required: false
+        type: AdditionalInfo[]
+      minimalResults:
+        description: The minimal response.
+        required: false
+        type: KeyValuePair[]
+      detailResults:
+        description: The detailed response.
+        required: false
+        type: Account[]
+        example: []
+      additionalFields:
+        required: false
+        description: Additional data to send.
+        type: array
+        example: []
+
+  I18NInfo:
+    description: The I18N information of the request.
+    properties:
+      localeCode:
+        description: The locale code of the request.
+        type: string
+        example: "en-us"
+        required: false
+      localeName:
+        description: The locale name of a request.
+        required: false
+        type: string
+        example: "United States"
+      currencyCode:
+        description: The currency code used in a request payload.
+        required: false
+        type: string
+        example: "USD"
+      currencyName:
+        description: The currency name related to the currencyCode property used in the request.
+        required: false
+        type: string
+        example: "United States Dollar"
+      timezone:
+        description: The time zone of the request.
+        required: false
+        type: string
+        example: "Apia Standard Time (Pacific/Apia)"
+
+  Result:
+    description: The metadata of the response payload.
+    properties:
+      status:
+        enum: [success,error]
+        required: false
+      code:
+        description: A set of predefined codes similar to the HTTP status codes that indicate a business rule violation.
+        type: integer
+        required: false
+      additionalStatus:
+        description: The additional status for individual transactions.
+        required: false
+        type: KeyValuePair
+      adServerLogId:
+        description: The unique log ID of the request for troubleshooting.
+        type: string
+        required: false
+      shortMessage:
+        type: string
+        description: If the request mode is minimal, send at least the minimum information required to understand the error case.
+        required: false
+      verboseMessage:
+        type: string
+        required: false
+        description: If the request mode is detailed, send verbose information needed to understand the error case.
+
+  KeyValuePair:
+    description: A key-value pair map.
+    properties:
+      additionField1: 
+        description: The additionField1 property value.
+        example: additionField_1_Value
+        type: any
+        required: false

@@ -1,0 +1,19 @@
+{
+    "requestId": "RQST00001",
+    "requestedBy": "Bianca White",
+    "adServerInstanceId": "INS0491032",
+    "result": {
+        "status": "success",
+        "code": 200,
+        "additionalStatus": {},
+        "shortMessage": "",
+        "verboseMessage": ""
+    },
+    "addtionalInfo": [],
+    "minimalResults": [
+    {
+        "AC00xxx13": "8f651263-0478-49ea-8811-15323b9c9784"
+    }
+    ],
+    "detailResults": []
+}

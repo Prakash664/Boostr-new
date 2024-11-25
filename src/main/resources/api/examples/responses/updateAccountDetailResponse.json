@@ -1,0 +1,30 @@
+{
+  "requestId": "RQST00001",
+  "requestedBy": "Bianca White",
+  "adServerInstanceId": "INS0491032",
+  "result": {
+    "status": "success",
+    "code": 200,
+    "additionalStatus": {},
+    "adServerLogId": "",
+    "shortMessage": "",
+    "verboseMessage": ""
+  },
+  "additionalInfo":[],
+  "minimalResults": [],
+  "detailResults": [
+    {
+      "id": "c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf",
+      "accountType": "Advertiser",
+      "accountName": "Acme Global",
+      "description": "This is Acme Global Account based in US",
+      "accountNumber": "AC00xxx13",
+      "accountCode": "00xxx000xxxxk30YAD",
+      "status": "InActive",
+      "relatedAccounts": [],
+      "tentativeMappingId": "",
+      "additionalFields": {},
+      "attributes": {}
+    }
+  ]
+}

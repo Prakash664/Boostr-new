@@ -1,0 +1,174 @@
+{
+    "requestId": "RQST00002",
+    "requestedBy": "Bianca White",
+    "requestI18NInfo": {
+        "locale": "en-US",
+        "timeZone": "PST",
+        "currency": "USD"
+    },
+    "requestMode": "Detail",
+    "adServerInstanceId": "INS0491001",
+    "adServerCode": "WO",
+    "adServerApplicationName": "Wide-Orbit",
+    "accounts": [
+        {
+            "id": "c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf",
+            "accountType": "Advertiser",
+            "accountName": "Acme Global247",
+            "description": "This is Acme Global Account based in US",
+            "adServerUserId": "c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf",
+            "accountNumber": "AC0012313",
+            "numberOfEmployees": 25000,
+            "industry": "Consumption-Beverage",
+            "rating": "hot",
+            "website": "http://www.acmeexample.com",
+            "phone": "000000000",
+            "address": {
+                "addressLine1": "address line 1",
+                "addressLine2": "address line 2",
+                "addressLine3": "address line 3",
+                "city": "Houston",
+                "state": "Texas",
+                "zipcode": "77001",
+                "country": "United States",
+                "email": "example@email.com",
+                "phone": "9876543210",
+                "alternatePhone": "9876543210"
+            },
+            "billingAddress": {
+                "addressLine1": "address line 1",
+                "addressLine2": "address line 2",
+                "addressLine3": "address line 3",
+                "city": "Houston",
+                "state": "Texas",
+                "zipcode": "77001",
+                "country": "United States",
+                "email": "example@email.com",
+                "phone": "9876543210",
+                "alternatePhone": "9876543210"
+            },
+            "shippingAddress": {
+                "addressLine1": "address line 1",
+                "addressLine2": "address line 2",
+                "addressLine3": "address line 3",
+                "city": "Houston",
+                "state": "Texas",
+                "zipcode": "77001",
+                "country": "United States",
+                "email": "example@email.com",
+                "phone": "9876543210",
+                "alternatePhone": "9876543210"
+            },
+            "accountCode": "00xxx000xxxxk30YAD",
+            "status": "Active",
+            "RelatedAccounts": {
+                "id": "c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf",
+                "accountType": "Agency",
+                "accountName": "Acme Global",
+                "description": "This is Acme Global Account based in US",
+                "address": {
+                    "addressLine1": "address line 1",
+                    "addressLine2": "address line 2",
+                    "addressLine3": "address line 3",
+                    "city": "Houston",
+                    "state": "Texas",
+                    "zipcode": "77001",
+                    "country": "United States",
+                    "email": "example@email.com",
+                    "phone": "9876543210",
+                    "alternatePhone": "9876543210"
+                },
+                "billingAddress": {
+                    "addressLine1": "address line 1",
+                    "addressLine2": "address line 2",
+                    "addressLine3": "address line 3",
+                    "city": "Houston",
+                    "state": "Texas",
+                    "zipcode": "77001",
+                    "country": "United States",
+                    "email": "example@email.com",
+                    "phone": "9876543210",
+                    "alternatePhone": "9876543210"
+                },
+                "shippingAddress": {
+                    "addressLine1": "address line 1",
+                    "addressLine2": "address line 2",
+                    "addressLine3": "address line 3",
+                    "city": "Houston",
+                    "state": "Texas",
+                    "zipcode": "77001",
+                    "country": "United States",
+                    "email": "example@email.com",
+                    "phone": "9876543210",
+                    "alternatePhone": "9876543210"
+                },
+                "accountCode": "00xxx000xxxxk30YAD",
+                "status": "Active",
+                "tentativeMappingId": "c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf",
+                "additionalFields": {
+                    "key1": "value1",
+                    "key2": "value2"
+                },
+                "attributes": {
+                    "attribute1": "value1",
+                    "attribute2": "value2"
+                }
+            },
+            "relatedContacts": [
+                {
+                    "id": "c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf",
+                    "contactType": "AdBuyer",
+                    "title": "Media Buyer",
+                    "saluation": "Mr.",
+                    "firstName": "Sean",
+                    "lastName": "Sean",
+                    "description": "Mr. Sean in Media Buyer",
+                    "email": "sean@example.com",
+                    "department": "Advertising",
+                    "phone": "000000000",
+                    "address": {
+                        "addressLine1": "address line 1",
+                        "addressLine2": "address line 2",
+                        "addressLine3": "address line 3",
+                        "city": "Houston",
+                        "state": "Texas",
+                        "zipcode": "77001",
+                        "country": "United States",
+                        "email": "example@email.com",
+                        "phone": "9876543210",
+                        "alternatePhone": "9876543210"
+                    },
+                    "mailingAddress": {
+                        "addressLine1": "address line 1",
+                        "addressLine2": "address line 2",
+                        "addressLine3": "address line 3",
+                        "city": "Houston",
+                        "state": "Texas",
+                        "zipcode": "77001",
+                        "country": "United States",
+                        "email": "example@email.com",
+                        "phone": "9876543210",
+                        "alternatePhone": "9876543210"
+                    },
+                    "contactCode": "00xxx000xxxxk30YAD",
+                    "tentativeMappingId": "c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf",
+                    "additionalFields": {
+                        "key1": "value1",
+                        "key2": "value2"
+                    },
+                    "attributes": {
+                        "attribute1": "value1",
+                        "attribute2": "value2"
+                    }
+                }
+            ],
+            "tentativeMappingId": "c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf",
+            "additionalFields": {
+                "additionField1": ""
+            },
+            "attributes": {
+                "additionField1": ""
+            }
+        }
+    ]
+}

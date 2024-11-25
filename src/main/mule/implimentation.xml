@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+	<http:request-config name="HTTP_Request_configuration1" doc:name="HTTP Request configuration" doc:id="1c9a0423-19d3-4cf2-b7be-dc77e3dd79c1" />
+	<sub-flow name="implimentationSub_Flow" doc:id="3cb2f58a-ce71-4f36-bd8e-3f434b3ea8b0" >
+		<logger level="INFO" doc:name="SfdcToMuleReq.payload" doc:id="a0cdce5c-356b-41fa-8065-b0196643b4a5" message='#[output application/json&#10;---&#10;{&#10;correlationId : correlationId,&#10;requestId : vars.originalPayload.requestId,&#10;message: "processed data from sdfcToMule"&#10;}]'/>
+		<ee:transform doc:name="SFDC payload" doc:id="ab42fc4b-1a04-4c4a-ae86-3a04ba5c6341">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+			<ee:variables>
+			</ee:variables>
+		</ee:transform>
+		<choice doc:name="Choice" doc:id="6e227b33-4dad-4f8d-9981-15546bb1a87c" >
+			<when expression="#[(isEmpty(payload.accounts[0].accountName) or isEmpty(payload.accounts[0].accountType))]">
+				<raise-error doc:name="Raise error" doc:id="a37eaa6f-b51e-4527-b2ab-8dc71568316b" type='REQUEST:BAD_REQUEST' description='#[if ((payload.accounts[0].accountName == null or isEmpty(payload.accounts[0].accountName)) and (payload.accounts[0].accountType == null or isEmpty(payload.accounts[0].accountType))) "Both accountName and accountType are required." else if (payload.accounts[0].accountName == null or isEmpty(payload.accounts[0].accountName)) "accountName is required." else if (payload.accounts[0].accountType == null or isEmpty(payload.accounts[0].accountType)) "accountType is required." else "Unknown error."]'/>
+			</when>
+			<otherwise >
+				<flow-ref doc:name="retrieve-token-subflow" doc:id="e97a1364-1d16-41c9-ac6a-c8e7439d55e1" name="retrieve-token-subflow" />
+			</otherwise>
+		</choice>
+		<parallel-foreach doc:name="Parallel For Each" doc:id="ceae0d92-c760-4ca8-930c-5178f238ecfa" collection="#[payload.accounts]" maxConcurrency="1">
+			<ee:transform doc:name="Data_Mappings" doc:id="1e6ab57c-053e-47b6-b6c9-4687696f3885">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{"account":
+   {
+          "name": payload.accountName ,
+          "website": payload.website,
+          "type": payload.accountType,
+         "parent_account_id": payload.parentId,
+          "shell_record": true,
+          "note": "Some notes",
+           "locked": true,
+              "legacy_id": "1",
+         "discount": 0,
+          "team": [
+       {
+        "user_id": "ADUSER003",
+        "share": 100,
+        "type":payload.accountType 
+      }],
+          "address":{
+            "email": payload.relatedContacts.email joinBy "",
+            "street1": payload.shippingAddress.addressLine1,
+            "street2": payload.shippingAddress.addressLine2,
+            "city": payload.shippingAddress.city,
+            "state": payload.shippingAddress.state,
+            "zip": payload.shippingAddress.zipcode,
+            "country": payload.shippingAddress.country,
+            "phone": payload.shippingAddress.phone,
+            "mobile": payload.shippingAddress.alternatePhone
+          },
+          "client_contacts": []    
+          } }]]></ee:set-payload>
+			</ee:message>
+			<ee:variables>
+			</ee:variables>
+		</ee:transform>
+			<flow-ref doc:name="Account_creation_subflow" doc:id="13bf1646-0d5e-45f5-af83-345fbef1112f" name="Account_creation_subflow" />
+		</parallel-foreach>
+		<ee:transform doc:name="Filter the payload" doc:id="d593f393-4f98-4961-b6a8-ee7ad34d6bfa" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload..payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<!-- [STUDIO:"Choice"]<choice doc:name="Choice" doc:id="d8b5912c-e2ba-4679-8f15-550aebb19b7b" >
+			<when expression='#[(vars.originalPayload.requestMode== "Minimal")&#93;'>
+				<ee:transform doc:name="Minimal Responce" doc:id="62d4b744-2148-44f8-b642-4a66f39f0c6c" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json 
+&#45;&#45;-
+{
+  "requestId": vars.originalPayload.requestId,
+  "requestedBy": vars.originalPayload.requestedBy,
+  "adServerInstanceId": vars.originalPayload.adServerInstanceId,
+  "result": {
+    "code": 200,
+    "status": "success",
+    "additionalStatus": {},
+    "adServerLogId": "",
+    "shortMessage": "",
+    "verboseMessage": ""
+  },
+   "addtionalInfo": [&#93;,
+   "minimalResults": 
+    payload map ((item, index) -> {
+      (vars.originalPayload.accounts[index&#93;.accountCode): item.id
+    })
+}&#93;&#93;></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</when>
+			<otherwise>
+				<ee:transform doc:name="Detailed Responce" doc:id="40dc24a5-de43-4c3b-9fbd-7453d734e680" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+
+&#45;&#45;-
+{
+  "requestId": vars.originalPayload.requestId,
+  "requestedBy": vars.originalPayload.requestedBy,
+  "adServerInstanceId": vars.originalPayload.adServerInstanceId,
+  "result": {
+    "code": 200,
+    "status": "success",
+    "additionalStatus": {},
+    "adServerLogId": "",
+    "shortMessage": "",
+    "verboseMessage": ""
+  },
+   "addtionalInfo": [&#93;,
+   "detailResults": payload map ((item, index) -> {
+      (vars.originalPayload.accounts[index&#93;.accountCode): item.id,
+    "accountType": item."type",
+    "accountName": item.name,
+    "description": payload.description,
+    "adServerUserId": payload.adServerUserId,
+    "originalPayloadNumber": payload.originalPayloadNumber,
+    "numberOfEmployees": payload.numberOfEmployees,
+    "industry": payload.industry,
+    "parentId": payload.parentId,
+    "rating": payload.rating,
+    "website": item.website,
+    "phone": payload.phone,
+    "billingAddress": {},
+    "shippingAddress": {
+      "addressLine1": item.address.street1,
+      "addressLine2": item.address.street2,
+      "addressLine3": item.address.street3,
+      "city": item.address.city,
+      "state": item.address.state,
+      "zipcode": item.address.zip,
+      "country": item.address.country,
+      "email": item.address.email,
+      "phone": item.address.phone,
+      "alternatePhone": item.address.mobile
+    }
+  })
+}
+
+  &#93;&#93;></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</otherwise>
+		</choice> [STUDIO] -->
+		<ee:transform doc:name="Responce_payload" doc:id="572d9a9f-e65e-4654-abdc-9d05b4f6e27f">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json skipNullOn="everywhere"
+
+
+---
+if(vars.originalPayload.requestMode== "Minimal")  
+{
+  "requestId": vars.originalPayload.requestId,
+  "requestedBy": vars.originalPayload.requestedBy,
+  "adServerInstanceId": vars.originalPayload.adServerInstanceId,
+  "result": {
+    "code": 200,
+    "status": "success",
+    "additionalStatus": {},
+    "adServerLogId": "",
+    "shortMessage": "",
+    "verboseMessage": ""
+  },
+   "addtionalInfo": [],
+   "minimalResults": 
+    payload map ((item, index) -> {
+      (vars.originalPayload.accounts[index].accountCode): item.id
+    })
+} else 
+{
+  "requestId": vars.originalPayload.requestId,
+  "requestedBy": vars.originalPayload.requestedBy,
+  "adServerInstanceId": vars.originalPayload.adServerInstanceId,
+  "result": {
+    "code": 200,
+    "status": "success",
+    "additionalStatus": {},
+    "adServerLogId": "",
+    "shortMessage": "",
+    "verboseMessage": ""
+  },
+   "addtionalInfo": [],
+   "detailResults": payload map ((item, index) -> {
+      (vars.originalPayload.accounts[index].accountCode): item.id,
+    "accountType": item."type",
+    "accountName": item.name,
+    "description": payload.description,
+    "adServerUserId": payload.adServerUserId,
+    "originalPayloadNumber": payload.originalPayloadNumber,
+    "numberOfEmployees": payload.numberOfEmployees,
+    "industry": payload.industry,
+    "parentId": payload.parentId,
+    "rating": payload.rating,
+    "website": item.website,
+    "phone": payload.phone,
+    "billingAddress": {},
+    "shippingAddress": {
+      "addressLine1": item.address.street1,
+      "addressLine2": item.address.street2,
+      "addressLine3": item.address.street3,
+      "city": item.address.city,
+      "state": item.address.state,
+      "zipcode": item.address.zip,
+      "country": item.address.country,
+      "email": item.address.email,
+      "phone": item.address.phone,
+      "alternatePhone": item.address.mobile
+    }
+  })
+}
+  ]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<!-- [STUDIO:"Final responce to SFDC"]<ee:transform doc:name="Final responce to SFDC" doc:id="9e9d7d53-7d17-4bc9-a289-63422af76569" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json skipNullOn="everywhere"
+&#45;&#45;-
+payload&#93;&#93;></ee:set-payload>
+			</ee:message>
+		</ee:transform> [STUDIO] -->
+		<logger level="INFO" doc:name="EndLogger" doc:id="d8508b29-9813-4ba7-abf0-06d74bb86fea" message='#[output application/json&#10;---&#10;{&#10;correlationId : correlationId,&#10;requestId : vars.originalPayload.requestId,&#10;message: "processed data Mule To SFDC"&#10;}]' />
+	</sub-flow>
+	<sub-flow name="Account_creation_subflow" doc:id="7079709f-0d21-4284-a9ec-ff493c6ac0b4" >
+		<logger level="INFO" doc:name="Mule To Boostr" doc:id="b4f0742a-118b-412e-88e0-2a7996ad390e" message='#[output application/json&#10;---&#10;{&#10;correlationId : correlationId,&#10;requestId : vars.originalPayload.requestId,&#10;message: "processed data Mule To Boostr"&#10;}]'/>
+		<http:request method="POST" doc:name="Boostr_Request_Connection" doc:id="9566e311-3372-4e35-9f44-2dddea708468" url="${http.requestor.url}">
+			<http:headers><![CDATA[#[output application/json
+---
+{
+	"Authorization" : vars.Token,
+	"Accept" : p('http.requestor.Accept'),
+	"Content-Type": p('http.requestor.Content-Type')
+}]]]></http:headers>
+		</http:request>
+		<logger level="INFO" doc:name="Logger" doc:id="26357a07-8ad6-4f02-8171-85261661af52" message='#[output application/json&#10;---&#10;{&#10;correlationId : correlationId,&#10;requestId : vars.originalPayload.requestId,&#10;message: "Data Created Successfully "&#10;}]'/>
+	</sub-flow>
+</mule>

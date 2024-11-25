@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="
+          http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd 
+          http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+    
+    <error-handler name="Global_Error_Handler">
+        
+        <!-- APIKIT Error Handler -->
+        <on-error-propagate when='error.errorType.namespace == "APIKIT"' enableNotifications="true" logException="true">
+			<flow-ref doc:name="Flow Reference-APIKIT" doc:id="83ba18c0-e08e-4ffe-a1e2-80dddb893fcf" name="Global-error-handlerSub_Flow"/>
+        
+</on-error-propagate>
+        
+       
+        <on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" when='error.errorType.namespace == "MULE"'>
+			<ee:transform doc:name="Transform Message" doc:id="0b0e9ea0-9af1-46f3-b023-8260a535bc6b" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+error.childErrors]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<set-variable doc:name="Set Variable" doc:id="d78f4af9-8a8d-48bd-82a9-10b73a1ee1f3" variableName="httpStatus" value='#[%dw 2.0&#10;output application/json&#10;var errorIdentifier= (payload.errorType.identifier[0] default "") as String&#10;---&#10;errorIdentifier match{&#10;	case is "BAD_REQUEST"-&gt; "400"&#10;	case is "CONNECTIVITY"-&gt;"502"&#10;	case is "FORBIDDEN"-&gt; "403"&#10;	case is "METHOD_NOT_ALLOWED"-&gt; "405"&#10;	case is "NOT_FOUND"-&gt; "404"&#10;	case is "UNAUTHORIZED"-&gt;"401"&#10;	case is "UNSUPPORTED_MEDIA_TYPE"-&gt; "415"&#10;	case is "UNKNOWN" -&gt; "400"&#10;	else -&gt; "500"&#10;}]'/>
+			<ee:transform doc:name="Transform Message" doc:id="5431f444-1cd1-423c-a3c1-e81ee85ea4b3" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+    "requestId": vars.originalPayload.requestId,
+    "requestedBy": vars.originalPayload.requestedBy,
+    "adServerInstanceId":vars.originalPayload.adServerInstanceId,
+	"result": {
+		"status": if(payload.errorType.identifier[0] == "UNKNOWN") "BAD_REQUEST" else (payload.errorType.identifier[0]),
+    "code": vars.httpStatus,
+		"additionalStatus": {
+      "c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf": {
+        "errorMessage": "",
+        "Related Accounts": [
+              {
+                "accountId": "00xxx000xxxxk30YEX",
+                "errorMessage": ""
+              },
+              {}
+          ]
+      }
+    },
+		"adServerLogId": "54uy-213i-9489-3121",
+    "shortMessage":if(payload.errorType.identifier[0] == "UNKNOWN") "BAD_REQUEST" else (payload.errorType.identifier[0]),
+    "verboseMessage":  payload..payload.errors.name[0] default payload.detailedDescription[0]
+	},
+  "addtionalInfo": [],
+	"minimalResults": [],
+	"detailResults": [],
+	"additionalFields": []
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+
+        </on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="cd15a8f7-2e64-44ae-b9d0-f6368846ab8f" when='error.errorType.namespace == "HTTP"'>
+			<flow-ref doc:name="Flow Reference-HTTP" doc:id="475d8fbc-5b56-4bd3-ac41-cc28f629746c" name="Global-error-handlerSub_Flow" />
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="ab688595-b084-4fe1-a873-897e1c1b8318" when='error.errorType.namespace == "REQUEST"' >
+			<flow-ref doc:name="Flow Reference-REQUEST" doc:id="b3af6bcf-bfa0-4e35-87e0-1d5284f9b121" name="Global-error-handlerSub_Flow" />
+		</on-error-propagate>
+        
+    
+</error-handler>
+	<sub-flow name="Global-error-handlerSub_Flow" doc:id="594bb2a6-8e62-4606-9191-aaf93876aaf0" >
+		<set-variable value='#[%dw 2.0&#10;output application/json&#10;var errorIdentifier = (error.errorType.identifier default "") as String&#10;---&#10;errorIdentifier match{&#10;	case is "BAD_REQUEST"-&gt; "400"&#10;	case is "NOT_FOUND" -&gt; "404"&#10;	case is "METHOD_NOT_ALLOWED"-&gt; "405"&#10;	case is "NOT_ACCEPTABLE"-&gt; "406"&#10;	case is "UNAUTHORIZED"-&gt;"401"&#10;	case is "UNSUPPORTED_MEDIA_TYPE"-&gt; "415"&#10;	case is "TOO_MANY_REQUESTS"-&gt; "429"&#10;	else -&gt; "500"&#10;}]' doc:name="HttpStatusCode" doc:id="c7441eb2-1865-41a5-89bf-923416dee493" variableName="httpStatus" />
+		<ee:transform doc:name="Error_Message" doc:id="a290835e-e261-4b0f-9d43-a6aed02478f8" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+    "requestId": vars.originalPayload.requestId,
+    "requestedBy": vars.originalPayload.requestedBy,
+    "adServerInstanceId":vars.originalPayload.adServerInstanceId,
+    "result": {
+        "status": error.errorType[0],
+        "code": vars.httpStatus,
+        "additionalStatus": {
+            "c7890ffa-bd35-f3ef-38f8-4c649xxxxxxf": {
+                "errorMessage": "",
+                "Related Accounts": [
+                    {
+                        "accountId": "00xxx000xxxxk30YEX",
+                        "errorMessage": ""
+                    },
+                    {}
+                ]
+            }
+        },
+        "adServerLogId": vars.originalPayload.adServerLogId,
+        "shortMessage": error.description,
+        "verboseMessage": ""
+    },
+    "minimalResults": [],
+    "detailResults": [],
+    "additionalFields": []
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+    
+
+</mule>

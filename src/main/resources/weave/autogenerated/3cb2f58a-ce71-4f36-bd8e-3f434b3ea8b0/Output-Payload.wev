@@ -1,0 +1,121 @@
+%dw 2.0
+
+type auto_3cb2f58a_ce71_4f36_bd8e_3f434b3ea8b0_Output_Payload = {
+  result: {
+    verboseMessage?: String, 
+    code?: Number, 
+    additionalStatus?: {
+      additionField1?: Any, 
+      _?: Any
+    } {"description": "The additional status for individual transactions."}, 
+    adServerLogId?: String, 
+    shortMessage?: String, 
+    status?: "success" | "error", 
+    _?: Any
+  } {"description": "A standard result."}, 
+  requestedBy: String, 
+  minimalResults?: Array<{    additionField1?: Any,     _?: Any  } {"description": "A key-value pair map."}> {"description": "The minimal response."}, 
+  additionalFields?: {
+    additionField1?: Any, 
+    _?: Any
+  } {"description": "Additional data to send."}, 
+  requestId: String, 
+  detailResults?: Array<{    website?: String,     accountCode?: String,     additionalFields?: {      additionField1?: Any,       _?: Any    } {"description": "Additional optional fields the client wants to include."},     accountName?: String,     accountType?: String,     tentativeMappingId?: String,     rating?: String,     description?: String,     industry?: String,     relatedAccounts?: Array<anonymousType_20> {"description": "Accounts that are associated with this account, such as agencies, brands, or an advertiser."}, 
+    accountNumber?: String, 
+    parentId?: String, 
+    numberOfEmployees?: Number, 
+    phone?: String, 
+    shippingAddress?: {
+      zipcode?: String, 
+      country?: String, 
+      adressLine1?: String, 
+      city?: String, 
+      phone?: String, 
+      alternatePhone?: String, 
+      adressLine2?: String, 
+      adressLine3?: String, 
+      state?: String, 
+      email?: String, 
+      _?: Any
+    } {"description": "The shipping address registered for this account with details such as street, city, state, and phone number."}, 
+    attributes?: {
+      additionField1?: Any, 
+      _?: Any
+    } {"description": "Additional request attributes used by wide-orbit, boostr, and flows."}, 
+    id?: String, 
+    adServerUserId?: String, 
+    billingAddress?: {
+      zipcode?: String, 
+      country?: String, 
+      adressLine1?: String, 
+      city?: String, 
+      phone?: String, 
+      alternatePhone?: String, 
+      adressLine2?: String, 
+      adressLine3?: String, 
+      state?: String, 
+      email?: String, 
+      _?: Any
+    } {"description": "Specifies the billing address registered for this account with details such as street, city, state, and phone number."}, 
+    status?: "Active" | "InActive", 
+    _?: Any
+  } {"description": "Details of an account."}> {"description": "The detailed response."}, 
+  adServerInstanceId: String, 
+  _?: Any
+}
+type anonymousType_20 = {
+  website?: String, 
+  accountCode?: String, 
+  additionalFields?: {
+    additionField1?: Any, 
+    _?: Any
+  } {"description": "Additional optional fields the client wants to include."}, 
+  accountName?: String, 
+  accountType?: String, 
+  tentativeMappingId?: String, 
+  rating?: String, 
+  description?: String, 
+  industry?: String, 
+  relatedAccounts?: Array<anonymousType_20> {"description": "Accounts that are associated with this account, such as agencies, brands, or an advertiser."}, 
+  accountNumber?: String, 
+  parentId?: String, 
+  numberOfEmployees?: Number, 
+  phone?: String, 
+  shippingAddress?: {
+    zipcode?: String, 
+    country?: String, 
+    adressLine1?: String, 
+    city?: String, 
+    phone?: String, 
+    alternatePhone?: String, 
+    adressLine2?: String, 
+    adressLine3?: String, 
+    state?: String, 
+    email?: String, 
+    _?: Any
+  } {"description": "The shipping address registered for this account with details such as street, city, state, and phone number."}, 
+  attributes?: {
+    additionField1?: Any, 
+    _?: Any
+  } {"description": "Additional request attributes used by wide-orbit, boostr, and flows."}, 
+  id?: String, 
+  adServerUserId?: String, 
+  billingAddress?: {
+    zipcode?: String, 
+    country?: String, 
+    adressLine1?: String, 
+    city?: String, 
+    phone?: String, 
+    alternatePhone?: String, 
+    adressLine2?: String, 
+    adressLine3?: String, 
+    state?: String, 
+    email?: String, 
+    _?: Any
+  } {"description": "Specifies the billing address registered for this account with details such as street, city, state, and phone number."}, 
+  status?: "Active" | "InActive", 
+  _?: Any
+} {"description": "Details of an account."}
+
+
+

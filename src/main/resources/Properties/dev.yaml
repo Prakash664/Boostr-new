@@ -1,0 +1,23 @@
+##listener Configurations##
+http:
+  listner:
+    host: "localhost"
+    port: "8081"
+    
+  requestor:
+    url: "https://sandbox.boostr.com/api/accounts"
+    Accept: "application/vnd.boostr.public"
+    Content-Type: "application/json"
+    
+  JWTtoken:  
+    tokenurl: "https://sandbox.boostr.com/api/user_token"
+
+objectStore:
+  entry.ttl: "86400"          
+  max.entries: "1"            
+  expiration.interval: "3600" 
+  
+InstanceId:
+  Id: "20083767"
+  
+

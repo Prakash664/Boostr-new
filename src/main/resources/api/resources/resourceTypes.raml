@@ -1,0 +1,47 @@
+#%RAML 1.0 Library
+usage: This library contains resource types.
+
+uses:
+  resourceSpecificType: ../modules/ResourceSpecificType.raml
+  commontype: ../modules/CommonTypeLibrary.raml
+
+types:
+  Create_Account: resourceSpecificType.createAccounts
+  Create_Account_Response: resourceSpecificType.createAccountsResponse
+  Update_Account: resourceSpecificType.updateAccounts
+  Update_Account_Response: resourceSpecificType.updateAccountsResponse
+  
+resourceTypes:
+  post-putResourceType:
+    is: [commontype.errorTrait]
+    post:
+      description: Creates the <<entityName>> entity.
+      displayName: <<postDisplayName>>
+      body:
+        application/json:
+          description: The <<entityName>> to create.
+          type: <<postEntityType>>
+          example: <<postRequestExample>>
+      responses:
+        200:
+          description: The <<entityName>> entity was created.
+          body:
+            application/json:
+              type: <<postResponseDatatype>>
+              example: <<postResponseExample>>
+    
+    put:
+       description: Updates the <<entityName>> entity.
+       displayName: <<putDisplayName>>
+       body:
+        application/json:
+          description: The <<entityName>> to update.
+          type: <<putEntityType>>
+          example: <<putRequestExample>>
+       responses:
+        200:
+          description: The <<entityName>> entity was updated.
+          body:
+            application/json:
+              type: <<putResponseDatatype>>
+              example: <<putResponseExample>>

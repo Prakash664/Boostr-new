@@ -1,0 +1,123 @@
+%dw 2.0
+
+type auto_3cb2f58a_ce71_4f36_bd8e_3f434b3ea8b0_Input_Payload = {
+  requestI18NInfo?: {
+    localeCode?: String, 
+    currencyName?: String, 
+    timezone?: String, 
+    localeName?: String, 
+    currencyCode?: String, 
+    _?: Any
+  } {"description": "The details about the locale, time zone, and currency configuration to be used by the request."}, 
+  requestedBy: String, 
+  additionalFields?: {
+    additionField1?: Any, 
+    _?: Any
+  } {"description": "Additional optional fields to include."}, 
+  requestId: String, 
+  adServerCode: String, 
+  attributes?: {
+    additionField1?: Any, 
+    _?: Any
+  } {"description": "Additional request attributes used by wide-orbit, boostr, and so on, and flows."}, 
+  requestMode: "Minimal" | "Detail", 
+  accounts: Array<{    website?: String,     accountCode?: String,     additionalFields?: {      additionField1?: Any,       _?: Any    } {"description": "Additional optional fields the client wants to include."},     accountName?: String,     accountType?: String,     tentativeMappingId?: String,     rating?: String,     description?: String,     industry?: String,     relatedAccounts?: Array<anonymousType_18> {"description": "Accounts that are associated with this account, such as agencies, brands, or an advertiser."}, 
+    accountNumber?: String, 
+    parentId?: String, 
+    numberOfEmployees?: Number, 
+    phone?: String, 
+    shippingAddress?: {
+      zipcode?: String, 
+      country?: String, 
+      adressLine1?: String, 
+      city?: String, 
+      phone?: String, 
+      alternatePhone?: String, 
+      adressLine2?: String, 
+      adressLine3?: String, 
+      state?: String, 
+      email?: String, 
+      _?: Any
+    } {"description": "The shipping address registered for this account with details such as street, city, state, and phone number."}, 
+    attributes?: {
+      additionField1?: Any, 
+      _?: Any
+    } {"description": "Additional request attributes used by wide-orbit, boostr, and flows."}, 
+    id?: String, 
+    adServerUserId?: String, 
+    billingAddress?: {
+      zipcode?: String, 
+      country?: String, 
+      adressLine1?: String, 
+      city?: String, 
+      phone?: String, 
+      alternatePhone?: String, 
+      adressLine2?: String, 
+      adressLine3?: String, 
+      state?: String, 
+      email?: String, 
+      _?: Any
+    } {"description": "Specifies the billing address registered for this account with details such as street, city, state, and phone number."}, 
+    status?: "Active" | "InActive", 
+    _?: Any
+  } {"description": "Details of an account."}> {"description": "The list of accounts to create."}, 
+  adServerApplicationName: String, 
+  adServerInstanceId: String, 
+  _?: Any
+} {"description": "The Account to create."}
+type anonymousType_18 = {
+  website?: String, 
+  accountCode?: String, 
+  additionalFields?: {
+    additionField1?: Any, 
+    _?: Any
+  } {"description": "Additional optional fields the client wants to include."}, 
+  accountName?: String, 
+  accountType?: String, 
+  tentativeMappingId?: String, 
+  rating?: String, 
+  description?: String, 
+  industry?: String, 
+  relatedAccounts?: Array<anonymousType_18> {"description": "Accounts that are associated with this account, such as agencies, brands, or an advertiser."}, 
+  accountNumber?: String, 
+  parentId?: String, 
+  numberOfEmployees?: Number, 
+  phone?: String, 
+  shippingAddress?: {
+    zipcode?: String, 
+    country?: String, 
+    adressLine1?: String, 
+    city?: String, 
+    phone?: String, 
+    alternatePhone?: String, 
+    adressLine2?: String, 
+    adressLine3?: String, 
+    state?: String, 
+    email?: String, 
+    _?: Any
+  } {"description": "The shipping address registered for this account with details such as street, city, state, and phone number."}, 
+  attributes?: {
+    additionField1?: Any, 
+    _?: Any
+  } {"description": "Additional request attributes used by wide-orbit, boostr, and flows."}, 
+  id?: String, 
+  adServerUserId?: String, 
+  billingAddress?: {
+    zipcode?: String, 
+    country?: String, 
+    adressLine1?: String, 
+    city?: String, 
+    phone?: String, 
+    alternatePhone?: String, 
+    adressLine2?: String, 
+    adressLine3?: String, 
+    state?: String, 
+    email?: String, 
+    _?: Any
+  } {"description": "Specifies the billing address registered for this account with details such as street, city, state, and phone number."}, 
+  status?: "Active" | "InActive", 
+  _?: Any
+} {"description": "Details of an account."}
+
+
+

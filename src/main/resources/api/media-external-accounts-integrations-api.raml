@@ -1,0 +1,27 @@
+#%RAML 1.0
+title: media-external-accounts-integrations-api
+version: v1
+description: Use the Media Integrations APIs to integrate Media Cloud apps with external systems.
+mediaType:
+  - application/json
+protocols:
+  - HTTPS
+uses:
+  resourceTypes: resources/resourceTypes.raml
+/account:
+  type: {
+      resourceTypes.post-putResourceType :
+        {
+          entityName : Account,
+          postDisplayName: syncNewAccountToExternalSystem,
+          postEntityType: Create_Account,
+          postResponseDatatype : Create_Account_Response,
+          postResponseExample: !include examples/responses/createAccountMinimalResponse.json,
+          postRequestExample: !include examples/requests/createAccountMinimalRequest.json,
+          putDisplayName: syncExistingAccountToExternalSystem,
+          putEntityType: Update_Account,
+          putResponseDatatype : Update_Account_Response,
+          putResponseExample: !include examples/responses/updateAccountDetailResponse.json,
+          putRequestExample: !include examples/requests/updateAccountDetailRequest.json
+      }
+    }

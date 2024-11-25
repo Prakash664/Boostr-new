@@ -1,0 +1,56 @@
+{
+    "id": 707029,
+    "name": "Acme Global248",
+    "website": "http://www.acmeexample.com",
+    "type": [
+        "Advertiser"
+    ],
+    "category": null,
+    "sub_category": null,
+    "parent_account": null,
+    "parent_account_id": null,
+    "region": null,
+    "segment": null,
+    "holding_company": null,
+    "shell_record": true,
+    "note": "Some notes",
+    "legacy_id": "1",
+    "discount": "0.0",
+    "created_by": "Salesforce API User",
+    "updated_by": null,
+    "created_at": "2024-11-21T17:02:09.406Z",
+    "updated_at": "2024-11-21T17:02:09.770Z",
+    "deleted_at": null,
+    "custom_fields": {},
+    "locked": true,
+    "team": [
+        {
+            "id": 10988,
+            "email": "sfdc_mediacloud_api@boostr.com",
+            "name": "Salesforce API User",
+            "role": null,
+            "share": 0,
+            "type": "Advertiser"
+        },
+        {
+            "id": 0,
+            "email": "system_change@email.com22222222",
+            "name": "System Change",
+            "role": null,
+            "share": 100,
+            "type": "Advertiser"
+        }
+    ],
+    "client_contacts": [],
+    "address": {
+        "email": "sean@example.com",
+        "street1": "address line 1",
+        "street2": "address line 2",
+        "city": "Houston",
+        "state": "Texas",
+        "zip": "77001",
+        "country": "United States",
+        "phone": "9876543210",
+        "mobile": "9876543210"
+    }
+}

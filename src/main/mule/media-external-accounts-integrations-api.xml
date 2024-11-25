@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
+    <flow name="media-external-accounts-integrations-api-main" doc:id="0197e43b-d252-4714-b70c-531a34d95272">
+        <http:listener path="/api/*" config-ref="media-external-accounts-integrations-api-httpListenerConfig">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:error-response>
+        </http:listener>
+		<set-variable value="#[payload]" doc:name="Set Variable" doc:id="0752954e-5f63-4e62-b5c5-53bba8780751" variableName="originalPayload" />
+		<logger level="INFO" doc:name="Logger" doc:id="623059df-6752-4708-a96e-dafc4c29a1c8" message='#[output application/json&#10;---&#10;{&#10;correlationId : correlationId,&#10;requestId : vars.originalPayload.requestId,&#10;message: "media-external-accounts-intefrations-api-started"&#10;}]'/>
+		<apikit:router config-ref="media-external-accounts-integrations-api-config" />
+        <error-handler ref="Global_Error_Handler" />
+    </flow>
+    <flow name="media-external-accounts-integrations-api-console" doc:id="fbb6b9dc-5241-4bb6-92ea-0735126225cb">
+        <http:listener path="/console/*" config-ref="media-external-accounts-integrations-api-httpListenerConfig">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:error-response>
+        </http:listener>
+		<apikit:console config-ref="media-external-accounts-integrations-api-config" />
+        <error-handler ref="Global_Error_Handler" />
+    </flow>
+    <!-- [STUDIO:"put:\account:application\json:media-external-accounts-integrations-api-config"]<flow name="put:\account:application\json:media-external-accounts-integrations-api-config">
+        <ee:transform doc:name="Transform Message">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+&#45;&#45;-
+{
+  requestId: "RQST00001",
+  requestedBy: "Bianca White",
+  adServerInstanceId: "INS0491032",
+  result: {
+    code: 200,
+    status: "success"
+  },
+  minimalResults: [
+    {
+      "1135728": "1135729"
+    }
+  &#93;,
+  detailResults: [&#93;
+} as Object {encoding: "UTF-8", mediaType: "application/json"}&#93;&#93;></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow> [STUDIO] -->
+    <flow name="post:\account:application\json:media-external-accounts-integrations-api-config" doc:id="8788d13d-00e1-49eb-9891-7334f968bb1f">
+        <flow-ref doc:name="Flow Reference" doc:id="8382cb42-f01a-48a0-a2c5-4c808c2b720b" name="implimentationSub_Flow" />
+    </flow>
+</mule>

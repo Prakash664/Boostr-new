@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
+	
+	<sub-flow name="TokenGenerationSub_Flow" doc:id="331e2763-bc4e-496d-b6c7-f9b4b6058c39" >
+		<set-variable value="#[%dw 2.0&#10;output application/json&#10;---&#10;{ &#10;    &quot;auth&quot;: { &#10;    &quot;email&quot;: p('http.JWTtoken.email'), &#10;    &quot;password&quot;: p('http.JWTtoken.password')&#10;  } &#10;}]" doc:name="Set Credentials" doc:id="c078bf7c-c125-47da-aa48-0a6e75960d44" variableName="credentials" />
+		<http:request method="POST" doc:name="Request" doc:id="7e7eb100-1782-4ca3-bcd6-bbaaae9cc86f" url="${http.JWTtoken.tokenurl}" target="Token" targetValue="#[payload.jwt]">
+			<http:body ><![CDATA[#[vars.credentials]]]></http:body>
+			<http:headers><![CDATA[#[output application/json
+---
+{
+	"Accept" : p('http.requestor.Accept'),
+	"Content-Type": p('http.requestor.Content-Type')
+}]]]></http:headers>
+		</http:request>
+	</sub-flow>
+	<sub-flow name="store-token-subflow" doc:id="550d89ed-8551-40b6-a809-7d59f4da50df" >
+		<flow-ref doc:name="TokenGenerationSub_Flow" doc:id="21b9f11e-a803-4d82-8c85-f932f07c50a9" name="TokenGenerationSub_Flow"/>
+		<os:store doc:name="Store Token in OS" doc:id="43ee992b-f24f-4b2f-b397-4ef8d022aeb5" key="clientCredentialToken" objectStore="Object_store" failOnNullValue="false">
+			<os:value><![CDATA[#[vars.Token]]]></os:value>
+		</os:store>
+	
+</sub-flow>
+	<sub-flow name="retrieve-token-subflow" doc:id="fc145e1c-d702-46e2-b007-84c23adc434f" >
+		<logger level="INFO" doc:name="Logger1" doc:id="851cb5d9-db5e-4569-a1fa-9f5a71bd4ce5" message="Intiated For Token Generation" />
+		<os:retrieve doc:name="Retrieve Token From OS" doc:id="88a8d6ae-d2b0-4c1b-a298-ee2d200adaaa" key="clientCredentialToken" objectStore="Object_store" target="Token">
+			<os:default-value ><![CDATA[#[output application/json
+---
+{}]]]></os:default-value>
+		</os:retrieve>
+		<choice doc:name="Choice" doc:id="777a6d85-03db-4959-989d-0d6c90962fca" >
+			<when expression="#[(isEmpty(vars.Token))]">
+				<flow-ref doc:name="store-token-subflow" doc:id="90f4c733-ff35-41bc-ac2b-d4864c1e61de" name="store-token-subflow"/>
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="Logger" doc:id="faf37a44-c2f4-47ab-b297-30cd6d2fc9e1" message="Token received from OS"/>
+			</otherwise>
+		
+</choice>
+		<logger level="INFO" doc:name="Logger" doc:id="6fbb3570-adc0-40b2-9fe2-3b6d2a07a1ea" message="Token Generated Successfully" />
+	
+</sub-flow>
+</mule>
